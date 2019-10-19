@@ -1,0 +1,43 @@
+#!/usr/bin/env python3.7
+
+import sys
+from poxlang.pox_token import tokenize
+
+
+def pox_eval_line(line):
+    err, tokens = tokenize(line)
+    if err:
+        raise err
+
+    for i, token in enumerate(tokens):
+        print(i, token)
+
+
+def run_repl() -> None:
+    while True:
+        try:
+            line = input("λ>")
+            pox_eval_line(line)
+        except EOFError:
+            sys.exit(0)
+
+
+def run_file(filename: str) -> None:
+    pass
+
+
+def main():
+    from pprint import pprint
+    pprint(dict(enumerate(sys.argv)))
+    assert sys.argv[0] == "./pox"
+
+    if sys.argv == "pox":
+        run_repl()
+    elif len(sys.argv) == 2:
+        run_file(sys.argv[1])
+    else:
+        print("Usage: pox [script]", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()
